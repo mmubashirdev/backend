@@ -30,10 +30,18 @@ class Item {
     const index = items.findIndex(item => item.id === parseInt(id));
     if (index === -1) return null;
     
+    // Only allow updating specific fields
+    const allowedFields = ['name', 'description'];
+    const updates = {};
+    allowedFields.forEach(field => {
+      if (data[field] !== undefined) {
+        updates[field] = data[field];
+      }
+    });
+    
     items[index] = {
       ...items[index],
-      ...data,
-      id: items[index].id, // Preserve ID
+      ...updates,
       updatedAt: new Date().toISOString()
     };
     return items[index];
